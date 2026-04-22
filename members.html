@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Meet our team members - Organization of KUET Sports">
+    <title>Members - Organization of KUET Sports</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo"><a href="home.html" style="color: var(--secondary-blue); text-decoration: none;">KUET Sports</a></div>
+            <ul class="nav-links">
+                <li><a href="home.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="members.html" class="nav-link">Members</a></li>
+                <li><a href="events.html" class="nav-link">Events</a></li>
+                <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <button class="login-btn" id="loginBtn">Login</button>
+        </div>
+    </nav>
+
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-container">
+            <span class="close-btn" id="closeBtn">&times;</span>
+            
+            <!-- Tab Buttons -->
+            <div class="login-tabs">
+                <button class="tab-btn active" data-tab="signin">Sign In</button>
+                <button class="tab-btn" data-tab="signup">Sign Up</button>
+            </div>
+
+            <!-- Sign In Form -->
+            <form class="login-form active" id="signinForm">
+                <h2>Sign In</h2>
+                <div class="form-group">
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+                <button type="submit" class="submit-btn">Sign In</button>
+                <p class="form-footer">Don't have an account? <a href="#" class="tab-link" data-tab="signup">Sign Up</a></p>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form class="login-form" id="signupForm">
+                <h2>Sign Up</h2>
+                <div class="form-group">
+                    <input type="text" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Confirm Password" required>
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="terms">
+                    <label for="terms">I agree to the terms and conditions</label>
+                </div>
+                <button type="submit" class="submit-btn">Sign Up</button>
+                <p class="form-footer">Already have an account? <a href="#" class="tab-link" data-tab="signin">Sign In</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Members Section -->
+    <section id="members" class="members">
+        <div class="container">
+            <h2 class="section-title">Meet Our Team</h2>
+            <div class="members-grid">
+                <!-- Member Card 1 -->
+                <div class="member-card">
+                    <div class="member-image">
+                        <div class="avatar-placeholder">👤</div>
+                    </div>
+                    <h3 class="member-name">Sk Nirob</h3>
+                    <p class="member-position">President</p>
+                    <p class="member-department">Department of Computer science and Engineering</p>
+                </div>
+
+                <!-- Member Card 2 -->
+                <div class="member-card">
+                    <div class="member-image">
+                        <div class="avatar-placeholder">👤</div>
+                    </div>
+                    <h3 class="member-name">Priom Sarkar</h3>
+                    <p class="member-position">Vice President</p>
+                    <p class="member-department">Department of Computer science and Engineering</p>
+                </div>
+
+                <!-- Member Card 3 -->
+                <div class="member-card">
+                    <div class="member-image">
+                        <div class="avatar-placeholder">👤</div>
+                    </div>
+                    <h3 class="member-name">Shariar Abdullah</h3>
+                    <p class="member-position">General Secretary</p>
+                    <p class="member-department">Department of Computer science and Engineering</p>
+                </div>
+
+                <!-- Member Card 4 -->
+                <div class="member-card">
+                    <div class="member-image">
+                        <div class="avatar-placeholder">👤</div>
+                    </div>
+                    <h3 class="member-name">A.R.M Ariful Islam</h3>
+                    <p class="member-position">Treasurer</p>
+                    <p class="member-department">Department of Computer science and Engineering</p>
+                </div>
+
+                <!-- Member Card 5 -->
+                <div class="member-card">
+                    <div class="member-image">
+                        <div class="avatar-placeholder">👤</div>
+                    </div>
+                    <h3 class="member-name">Nibir Hasan</h3>
+                    <p class="member-position">Sports Coordinator</p>
+                    <p class="member-department">Department of Computer science and Engineering</p>
+                </div>
+
+                <!-- Member Card 6 -->
+                <div class="member-card">
+                    <div class="member-image">
+                        <div class="avatar-placeholder">👤</div>
+                    </div>
+                    <h3 class="member-name">Ariful Islam Sheikh</h3>
+                    <p class="member-position">Events Manager</p>
+                    <p class="member-department">Department of Computer science and Engineering</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Organization of KUET Sports. All rights reserved.</p>
+            <p>Khulna University of Engineering & Technology</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</body>
+</html>
