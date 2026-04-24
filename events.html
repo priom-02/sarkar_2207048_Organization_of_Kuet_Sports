@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Upcoming events - Organization of KUET Sports">
+    <title>Events - Organization of KUET Sports</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo"><a href="home.html" style="color: var(--secondary-blue); text-decoration: none;">KUET Sports</a></div>
+            <ul class="nav-links">
+                <li><a href="home.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="members.html" class="nav-link">Members</a></li>
+                <li><a href="events.html" class="nav-link">Events</a></li>
+                <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <button class="login-btn" id="loginBtn">Login</button>
+        </div>
+    </nav>
+
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-container">
+            <span class="close-btn" id="closeBtn">&times;</span>
+            
+            <!-- Tab Buttons -->
+            <div class="login-tabs">
+                <button class="tab-btn active" data-tab="signin">Sign In</button>
+                <button class="tab-btn" data-tab="signup">Sign Up</button>
+            </div>
+
+            <!-- Sign In Form -->
+            <form class="login-form active" id="signinForm">
+                <h2>Sign In</h2>
+                <div class="form-group">
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+                <button type="submit" class="submit-btn">Sign In</button>
+                <p class="form-footer">Don't have an account? <a href="#" class="tab-link" data-tab="signup">Sign Up</a></p>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form class="login-form" id="signupForm">
+                <h2>Sign Up</h2>
+                <div class="form-group">
+                    <input type="text" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Confirm Password" required>
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="terms">
+                    <label for="terms">I agree to the terms and conditions</label>
+                </div>
+                <button type="submit" class="submit-btn">Sign Up</button>
+                <p class="form-footer">Already have an account? <a href="#" class="tab-link" data-tab="signin">Sign In</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Events Section -->
+    <section id="events" class="events">
+        <div class="container">
+            <h2 class="section-title">Upcoming Events</h2>
+            <p class="events-subtitle">Be part of our exciting sports events and tournaments</p>
+            
+            <div class="events-grid">
+                <!-- Event Card 1 -->
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="event-day">15</span>
+                        <span class="event-month">APR</span>
+                    </div>
+                    <div class="event-content">
+                        <h3 class="event-title">Football League 2024</h3>
+                        <p class="event-description">Inter-departmental football tournament with exciting matches and prizes.</p>
+                        <div class="event-meta">
+                            <span class="event-location">📍 Main Football Ground</span>
+                            <span class="event-time">⏰ 4:00 PM - 6:00 PM</span>
+                        </div>
+                        <a href="#register" class="event-link">Register Now →</a>
+                    </div>
+                </div>
+
+                <!-- Event Card 2 -->
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="event-day">22</span>
+                        <span class="event-month">APR</span>
+                    </div>
+                    <div class="event-content">
+                        <h3 class="event-title">Cricket Championship</h3>
+                        <p class="event-description">T20 cricket championship featuring teams from all departments competing for glory.</p>
+                        <div class="event-meta">
+                            <span class="event-location">📍 South Campus Ground</span>
+                            <span class="event-time">⏰ 3:00 PM - 7:00 PM</span>
+                        </div>
+                        <a href="#register" class="event-link">Register Now →</a>
+                    </div>
+                </div>
+
+                <!-- Event Card 3 -->
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="event-day">28</span>
+                        <span class="event-month">APR</span>
+                    </div>
+                    <div class="event-content">
+                        <h3 class="event-title">Badminton Open</h3>
+                        <p class="event-description">Competitive badminton tournament with singles and doubles categories.</p>
+                        <div class="event-meta">
+                            <span class="event-location">📍 Sports Complex Court</span>
+                            <span class="event-time">⏰ 2:00 PM - 8:00 PM</span>
+                        </div>
+                        <a href="#register" class="event-link">Register Now →</a>
+                    </div>
+                </div>
+
+                <!-- Event Card 4 -->
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="event-day">05</span>
+                        <span class="event-month">MAY</span>
+                    </div>
+                    <div class="event-content">
+                        <h3 class="event-title">Annual Sports Fest</h3>
+                        <p class="event-description">Grand celebration of sports featuring multiple events, performances, and awards ceremony.</p>
+                        <div class="event-meta">
+                            <span class="event-location">📍 Main Stadium</span>
+                            <span class="event-time">⏰ 9:00 AM - 5:00 PM</span>
+                        </div>
+                        <a href="#register" class="event-link">Register Now →</a>
+                    </div>
+                </div>
+
+                <!-- Event Card 5 -->
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="event-day">12</span>
+                        <span class="event-month">MAY</span>
+                    </div>
+                    <div class="event-content">
+                        <h3 class="event-title">Tennis Tournament</h3>
+                        <p class="event-description">Professional tennis tournament with university ranking matches and coaching clinics.</p>
+                        <div class="event-meta">
+                            <span class="event-location">📍 Tennis Courts</span>
+                            <span class="event-time">⏰ 3:00 PM - 6:00 PM</span>
+                        </div>
+                        <a href="#register" class="event-link">Register Now →</a>
+                    </div>
+                </div>
+
+                <!-- Event Card 6 -->
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="event-day">18</span>
+                        <span class="event-month">MAY</span>
+                    </div>
+                    <div class="event-content">
+                        <h3 class="event-title">Volleyball League</h3>
+                        <p class="event-description">Exciting volleyball league with men's and women's categories and team competitions.</p>
+                        <div class="event-meta">
+                            <span class="event-location">📍 Athletic Arena</span>
+                            <span class="event-time">⏰ 4:00 PM - 7:00 PM</span>
+                        </div>
+                        <a href="#register" class="event-link">Register Now →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Organization of KUET Sports. All rights reserved.</p>
+            <p>Khulna University of Engineering & Technology</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</body>
+</html>
