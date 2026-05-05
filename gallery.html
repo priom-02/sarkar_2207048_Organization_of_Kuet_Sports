@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gallery - Organization of KUET Sports">
+    <title>Gallery - Organization of KUET Sports</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo"><a href="home.html" style="color: var(--secondary-blue); text-decoration: none;">KUET Sports</a></div>
+            <ul class="nav-links">
+                <li><a href="home.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="members.html" class="nav-link">Members</a></li>
+                <li><a href="events.html" class="nav-link">Events</a></li>
+                <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <button class="login-btn" id="loginBtn">Login</button>
+        </div>
+    </nav>
+
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-container">
+            <span class="close-btn" id="closeBtn">&times;</span>
+            
+            <!-- Tab Buttons -->
+            <div class="login-tabs">
+                <button class="tab-btn active" data-tab="signin">Sign In</button>
+                <button class="tab-btn" data-tab="signup">Sign Up</button>
+            </div>
+
+            <!-- Sign In Form -->
+            <form class="login-form active" id="signinForm">
+                <h2>Sign In</h2>
+                <div class="form-group">
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+                <button type="submit" class="submit-btn">Sign In</button>
+                <p class="form-footer">Don't have an account? <a href="#" class="tab-link" data-tab="signup">Sign Up</a></p>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form class="login-form" id="signupForm">
+                <h2>Sign Up</h2>
+                <div class="form-group">
+                    <input type="text" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Confirm Password" required>
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="terms">
+                    <label for="terms">I agree to the terms and conditions</label>
+                </div>
+                <button type="submit" class="submit-btn">Sign Up</button>
+                <p class="form-footer">Already have an account? <a href="#" class="tab-link" data-tab="signin">Sign In</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <h2 class="section-title">Gallery</h2>
+            <p class="gallery-subtitle">Explore our memorable moments and sporting events</p>
+            
+            <!-- Gallery Filter -->
+            <div class="gallery-filter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="tournaments">Tournaments</button>
+                <button class="filter-btn" data-filter="training">Training</button>
+                <button class="filter-btn" data-filter="Winning Moments">Winning Moments</button>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="gallery-grid">
+                <!-- Gallery Item 1 -->
+                <div class="gallery-item" data-category="tournaments">
+                    <div class="gallery-image">
+                        <img src="image/gallery/6.png" alt="Football Tournament" class="gallery-photo">
+                        <div class="gallery-overlay">
+                            <h3>Football Tournament</h3>
+                            <p>Inter-University Championship 2024</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="tournaments">
+                    <div class="gallery-image">
+                        <img src="image/gallery/3.png" alt="Cricket Championship" class="gallery-photo">
+                        <div class="gallery-overlay">
+                            <h3>Cricket Championship</h3>
+                            <p>Competitive singles tournament</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="tournaments">
+                    <div class="gallery-image">
+                        <img src="image/gallery/7.png" alt="Football Tournament" class="gallery-photo">
+                        <div class="gallery-overlay">
+                            <h3>Football Tournament</h3>
+                            <p>Inter-University Championship 2024</p>
+                        </div>
+                    </div>
+                </div>   
+                <div class="gallery-item" data-category="tournaments">
+                    <div class="gallery-image">
+                        <img src="image/gallery/8.png" alt="Football Tournament" class="gallery-photo">
+                        <div class="gallery-overlay">
+                            <h3>Football Tournament</h3>
+                            <p>Inter-University Championship 2024</p>
+                        </div>
+                    </div>
+                </div>                             
+                <!-- Gallery Item 2 -->
+                <div class="gallery-item" data-category="training">
+                    <div class="gallery-image">
+                        <img src="image/gallery/12.png" alt="Football Training" class="gallery-photo">
+                        <div class="gallery-overlay">
+                            <h3>Football Training</h3>
+                            <p>Professional coaching sessions</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="training">
+                    <div class="gallery-image">
+                        <img src="image/gallery/4.png" alt="Cricket Training" class="gallery-photo">
+                        <div class="gallery-overlay">
+                            <h3>Cricket Training</h3>
+                            <p>Professional coaching sessions</p>
+                        </div>
+                    </div>
+                </div>
+               <div class="gallery-item" data-category="training">
+                    <div class="gallery-image">
+                        <img src="image/gallery/11.png" alt="Football Training" class="gallery-photo">
+                        <div class="gallery-overlay">
+                            <h3>Football Training</h3>
+                            <p>Professional coaching sessions</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Gallery Item 3 -->
+                <div class="gallery-item" data-category="Winning Moments">
+                    <div class="gallery-image">
+                        <img src="image/gallery/2.png" alt="Sports Day" class="gallery-photo">
+                        <div class="gallery-overlay">
+                            <h3>Annual Sports Day</h3>
+                            <p>Celebrating athletic excellence</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="gallery-item" data-category="Winning Moments">
+                    <div class="gallery-image">
+                        <img src="image/gallery/5.png" alt="Awards Ceremony" class="gallery-photo">
+                        <div class="gallery-overlay">
+                            <h3>Awards Ceremony</h3>
+                            <p>Recognizing team achievements</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="Winning Moments">
+                    <div class="gallery-image">
+                        <img src="image/gallery/1.png" alt="Awards Ceremony" class="gallery-photo">
+                        <div class="gallery-overlay">
+                            <h3>Awards Ceremony</h3>
+                            <p>Recognizing team achievements</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="Winning Moments">
+                    <div class="gallery-image">
+                        <img src="image/gallery/10.png" alt="Sports Day" class="gallery-photo">
+                        <div class="gallery-overlay">
+                            <h3>Annual Sports Day</h3>
+                            <p>Celebrating athletic excellence</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Organization of KUET Sports. All rights reserved.</p>
+            <p>Khulna University of Engineering & Technology</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="gallery-filter.js"></script>
+</body>
+</body>
+</html>
