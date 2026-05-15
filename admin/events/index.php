@@ -176,7 +176,10 @@ $count = mysqli_num_rows($events);
         <a href="../dashboard.php" class="back-link">← Back to Dashboard</a>
         
         <div class="header">
-            <h2>Manage Events (<?php echo $count; ?>)</h2>
+            <div>
+                <h2>Manage Events (<?php echo $count; ?>)</h2>
+                <a href="../../admin/registrations/index.php" style="color: #667eea; text-decoration: none; font-size: 14px; margin-top: 5px; display: inline-block;">View Event Registrations →</a>
+            </div>
             <a href="add.php" class="btn-primary">+ Add New Event</a>
         </div>
         

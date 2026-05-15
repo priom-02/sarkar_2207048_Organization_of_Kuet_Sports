@@ -194,7 +194,9 @@ $count = mysqli_num_rows($gallery);
             <div class="gallery-grid">
                 <?php while ($item = mysqli_fetch_assoc($gallery)): ?>
                     <div class="gallery-item">
-                        <div class="gallery-thumbnail">🖼️</div>
+                        <div class="gallery-thumbnail">
+                            <img src="../../<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo sanitize($item['title']); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
                         <div class="gallery-info">
                             <div class="gallery-title" title="<?php echo sanitize($item['title']); ?>"><?php echo sanitize($item['title']); ?></div>
                             <div class="gallery-category"><?php echo sanitize($item['category'] ?? 'Uncategorized'); ?></div>
