@@ -18,10 +18,11 @@
             <ul class="nav-links">
                 <li><a href="home.html" class="nav-link">Home</a></li>
                 <li><a href="about.html" class="nav-link">About</a></li>
-                <li><a href="members.html" class="nav-link">Members</a></li>
-                <li><a href="events.html" class="nav-link">Events</a></li>
-                <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                <li><a href="members.php" class="nav-link">Members</a></li>
+                <li><a href="events.php" class="nav-link">Events</a></li>
+                <li><a href="gallery.php" class="nav-link">Gallery</a></li>
                 <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="admin/login.php" class="nav-link" style="color: #ff6b6b;">Admin</a></li>
             </ul>
             <button class="login-btn" id="loginBtn">Login</button>
         </div>
@@ -86,108 +87,8 @@
             <h2 class="section-title">Upcoming Events</h2>
             <p class="events-subtitle">Be part of our exciting sports events and tournaments</p>
             
-            <div class="events-grid">
-                <!-- Event Card 1 -->
-                <div class="event-card">
-                    <div class="event-date">
-                        <span class="event-day">15</span>
-                        <span class="event-month">APR</span>
-                    </div>
-                    <div class="event-content">
-                        <h3 class="event-title">Football League 2024</h3>
-                        <p class="event-description">Inter-departmental football tournament with exciting matches and prizes.</p>
-                        <div class="event-meta">
-                            <span class="event-location"> Main Football Ground</span>
-                            <span class="event-time"> 4:00 PM - 6:00 PM</span>
-                        </div>
-                        <a href="#register" class="event-link">Register Now →</a>
-                    </div>
-                </div>
-
-                <!-- Event Card 2 -->
-                <div class="event-card">
-                    <div class="event-date">
-                        <span class="event-day">22</span>
-                        <span class="event-month">APR</span>
-                    </div>
-                    <div class="event-content">
-                        <h3 class="event-title">Cricket Championship</h3>
-                        <p class="event-description">T20 cricket championship featuring teams from all departments competing for glory.</p>
-                        <div class="event-meta">
-                            <span class="event-location"> South Campus Ground</span>
-                            <span class="event-time"> 3:00 PM - 7:00 PM</span>
-                        </div>
-                        <a href="#register" class="event-link">Register Now →</a>
-                    </div>
-                </div>
-
-                <!-- Event Card 3 -->
-                <div class="event-card">
-                    <div class="event-date">
-                        <span class="event-day">28</span>
-                        <span class="event-month">APR</span>
-                    </div>
-                    <div class="event-content">
-                        <h3 class="event-title">Badminton Open</h3>
-                        <p class="event-description">Competitive badminton tournament with singles and doubles categories.</p>
-                        <div class="event-meta">
-                            <span class="event-location"> Sports Complex Court</span>
-                            <span class="event-time"> 2:00 PM - 8:00 PM</span>
-                        </div>
-                        <a href="#register" class="event-link">Register Now →</a>
-                    </div>
-                </div>
-
-                <!-- Event Card 4 -->
-                <div class="event-card">
-                    <div class="event-date">
-                        <span class="event-day">05</span>
-                        <span class="event-month">MAY</span>
-                    </div>
-                    <div class="event-content">
-                        <h3 class="event-title">Annual Sports Fest</h3>
-                        <p class="event-description">Grand celebration of sports featuring multiple events, performances, and awards ceremony.</p>
-                        <div class="event-meta">
-                            <span class="event-location">Main Stadium</span>
-                            <span class="event-time">9:00 AM - 5:00 PM</span>
-                        </div>
-                        <a href="#register" class="event-link">Register Now →</a>
-                    </div>
-                </div>
-
-                <!-- Event Card 5 -->
-                <div class="event-card">
-                    <div class="event-date">
-                        <span class="event-day">12</span>
-                        <span class="event-month">MAY</span>
-                    </div>
-                    <div class="event-content">
-                        <h3 class="event-title">Tennis Tournament</h3>
-                        <p class="event-description">Professional tennis tournament with university ranking matches and coaching clinics.</p>
-                        <div class="event-meta">
-                            <span class="event-location"> Tennis Courts</span>
-                            <span class="event-time"> 3:00 PM - 6:00 PM</span>
-                        </div>
-                        <a href="#register" class="event-link">Register Now →</a>
-                    </div>
-                </div>
-
-                <!-- Event Card 6 -->
-                <div class="event-card">
-                    <div class="event-date">
-                        <span class="event-day">18</span>
-                        <span class="event-month">MAY</span>
-                    </div>
-                    <div class="event-content">
-                        <h3 class="event-title">Volleyball League</h3>
-                        <p class="event-description">Exciting volleyball league with men's and women's categories and team competitions.</p>
-                        <div class="event-meta">
-                            <span class="event-location"> Athletic Arena</span>
-                            <span class="event-time"> 4:00 PM - 7:00 PM</span>
-                        </div>
-                        <a href="#register" class="event-link">Register Now →</a>
-                    </div>
-                </div>
+            <div class="events-grid" id="eventsGrid">
+                <!-- Events generated by PHP -->
             </div>
         </div>
     </section>
