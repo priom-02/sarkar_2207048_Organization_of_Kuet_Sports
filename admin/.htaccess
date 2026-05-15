@@ -1,0 +1,14 @@
+# Prevent direct access to includes folder
+<FilesMatch "^includes/">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Prevent directory listing
+Options -Indexes
+
+# Prevent viewing of sensitive files
+<FilesMatch "\.(sql|config|log)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

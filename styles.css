@@ -115,15 +115,16 @@ p {
     box-shadow: var(--shadow);
     z-index: 1000;
     transition: var(--transition-normal);
+    padding: var(--spacing-md) var(--spacing-md);
 }
 
 .navbar-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: var(--spacing-md);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: var(--spacing-xl);
 }
 
 .logo {
@@ -134,6 +135,26 @@ p {
     letter-spacing: 2px;
     cursor: pointer;
     transition: var(--transition-fast);
+    min-width: fit-content;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-logo {
+    height: 40px;
+    width: 40px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    color: var(--accent-blue);
+}
+
+.logo:hover .navbar-logo {
+    transform: scale(1.1);
 }
 
 .logo:hover {
@@ -496,19 +517,10 @@ p {
     }
 }
 
-.hero-logo {
-    width: 200px;
-    height: 200px;
-    display: block;
-    margin: 0 auto var(--spacing-lg);
-    object-fit: contain;
-    max-width: 100%;
-    border-radius: 15px;
-}
-
 .hero-title {
     font-size: 3.5rem;
     font-weight: 800;
+    margin-top: var(--spacing-2xl);
     margin-bottom: var(--spacing-md);
     line-height: 1.2;
     color: var(--white);
@@ -546,12 +558,6 @@ p {
 }
 
 @media (max-width: 768px) {
-    .hero-logo {
-        width: 140px;
-        height: 140px;
-        border-radius: 12px;
-    }
-
     .hero-title {
         font-size: 2.2rem;
     }
