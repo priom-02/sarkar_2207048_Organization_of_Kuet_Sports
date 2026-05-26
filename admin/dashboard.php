@@ -14,6 +14,8 @@ include 'includes/db.php';
 $members_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM members"))['count'];
 $events_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM events"))['count'];
 $gallery_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM gallery"))['count'];
+$contacts_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM contact_messages"))['count'];
+$new_contacts = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM contact_messages WHERE status='new'"))['count'];
 
 ?>
 
@@ -181,6 +183,12 @@ $gallery_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as coun
                     <h3>🖼️ Gallery</h3>
                     <p class="count"><?php echo $gallery_count; ?> Photos</p>
                     <p>Upload and organize photos</p>
+                </a>
+                
+                <a href="contacts/index.php" class="module">
+                    <h3>💬 Contacts</h3>
+                    <p class="count"><?php echo $new_contacts; ?> New</p>
+                    <p><?php echo $contacts_count; ?> Total Messages</p>
                 </a>
             </div>
         </div>

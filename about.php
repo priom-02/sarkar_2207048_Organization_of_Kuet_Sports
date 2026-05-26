@@ -1,3 +1,7 @@
+<?php
+// About page - Static content with navigation
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,15 +17,15 @@
         <div class="navbar-container">
             <div class="logo">
                 <img src="image/home/logo.png" alt="KUET Sports Logo" class="navbar-logo">
-                <a href="home.html" style="color: var(--secondary-blue); text-decoration: none;">KUET Sports</a>
+                <a href="home.php" style="color: var(--secondary-blue); text-decoration: none;">KUET Sports</a>
             </div>
             <ul class="nav-links">
-                <li><a href="home.html" class="nav-link">Home</a></li>
-                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="home.php" class="nav-link">Home</a></li>
+                <li><a href="about.php" class="nav-link">About</a></li>
                 <li><a href="members.php" class="nav-link">Members</a></li>
                 <li><a href="events.php" class="nav-link">Events</a></li>
                 <li><a href="gallery.php" class="nav-link">Gallery</a></li>
-                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="contact.php" class="nav-link">Contact</a></li>
                 <li><a href="admin/login.php" class="nav-link" style="color: #ff6b6b;">Admin</a></li>
             </ul>
             <button class="login-btn" id="loginBtn">Login</button>
@@ -267,6 +271,5 @@
     </footer>
 
     <script src="main.js"></script>
-</body>
 </body>
 </html>

@@ -16,15 +16,16 @@ $error = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = trim($_POST['name'] ?? '');
     $position = trim($_POST['position'] ?? '');
+    $team = trim($_POST['team'] ?? 'General');
     $email = trim($_POST['email'] ?? '');
     $phone = trim($_POST['phone'] ?? '');
     $bio = trim($_POST['bio'] ?? '');
     $photo = trim($_POST['photo'] ?? '');
     
-    if (empty($name) || empty($position)) {
-        $error = "Name and Position are required!";
+    if (empty($name) || empty($position) || empty($team)) {
+        $error = "Name, Position, and Team are required!";
     } else {
-        if (add_member($conn, $name, $position, $email, $phone, $bio, $photo)) {
+        if (add_member($conn, $name, $position, $team, $email, $phone, $bio, $photo)) {
             $message = "Member added successfully!";
             header("Location: index.php");
             exit();
@@ -213,6 +214,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="form-group">
                     <label for="position">Position *</label>
                     <input type="text" id="position" name="position" placeholder="e.g., Captain, Vice Captain" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="team">Team *</label>
+                    <select id="team" name="team" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; font-family: inherit;">
+                        <option value="">-- Select Team --</option>
+                        <option value="Cricket Team">Cricket Team</option>
+                        <option value="Football Team">Football Team</option>
+                        <option value="Badminton Team">Badminton Team</option>
+                        <option value="Basketball Team">Basketball Team</option>
+                        <option value="Tennis Team">Tennis Team</option>
+                        <option value="Volleyball Team">Volleyball Team</option>
+                        <option value="General">General</option>
+                    </select>
                 </div>
                 
                 <div class="form-group">

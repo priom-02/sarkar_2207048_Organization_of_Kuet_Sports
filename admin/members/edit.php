@@ -23,15 +23,16 @@ $error = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = trim($_POST['name'] ?? '');
     $position = trim($_POST['position'] ?? '');
+    $team = trim($_POST['team'] ?? 'General');
     $email = trim($_POST['email'] ?? '');
     $phone = trim($_POST['phone'] ?? '');
     $bio = trim($_POST['bio'] ?? '');
     $photo = trim($_POST['photo'] ?? '');
     
-    if (empty($name) || empty($position)) {
-        $error = "Name and Position are required!";
+    if (empty($name) || empty($position) || empty($team)) {
+        $error = "Name, Position, and Team are required!";
     } else {
-        if (update_member($conn, $id, $name, $position, $email, $phone, $bio, $photo)) {
+        if (update_member($conn, $id, $name, $position, $team, $email, $phone, $bio, $photo)) {
             header("Location: index.php");
             exit();
         } else {
@@ -206,6 +207,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="form-group">
                     <label for="position">Position *</label>
                     <input type="text" id="position" name="position" value="<?php echo sanitize($member['position']); ?>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="team">Team *</label>
+                    <select id="team" name="team" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; font-family: inherit;">
+                        <option value="">-- Select Team --</option>
+                        <option value="Cricket Team" <?php echo ($member['team'] == 'Cricket Team') ? 'selected' : ''; ?>>Cricket Team</option>
+                        <option value="Football Team" <?php echo ($member['team'] == 'Football Team') ? 'selected' : ''; ?>>Football Team</option>
+                        <option value="Badminton Team" <?php echo ($member['team'] == 'Badminton Team') ? 'selected' : ''; ?>>Badminton Team</option>
+                        <option value="Basketball Team" <?php echo ($member['team'] == 'Basketball Team') ? 'selected' : ''; ?>>Basketball Team</option>
+                        <option value="Tennis Team" <?php echo ($member['team'] == 'Tennis Team') ? 'selected' : ''; ?>>Tennis Team</option>
+                        <option value="Volleyball Team" <?php echo ($member['team'] == 'Volleyball Team') ? 'selected' : ''; ?>>Volleyball Team</option>
+                        <option value="General" <?php echo ($member['team'] == 'General') ? 'selected' : ''; ?>>General</option>
+                    </select>
                 </div>
                 
                 <div class="form-group">

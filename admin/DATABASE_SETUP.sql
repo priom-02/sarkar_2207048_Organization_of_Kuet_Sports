@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS members (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     position VARCHAR(50) NOT NULL,
+    team VARCHAR(100) DEFAULT 'General',
     email VARCHAR(100),
     phone VARCHAR(20),
     bio TEXT,
@@ -34,7 +35,7 @@ CREATE TABLE IF NOT EXISTS events (
 );
 
 -- ==========================================
--- 3. GALLERY TABLE
+-- GALLERY TABLE
 -- ==========================================
 CREATE TABLE IF NOT EXISTS gallery (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -47,18 +48,33 @@ CREATE TABLE IF NOT EXISTS gallery (
 );
 
 -- ==========================================
+-- CONTACT MESSAGES TABLE
+-- ==========================================
+CREATE TABLE IF NOT EXISTS contact_messages (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    message TEXT NOT NULL,
+    status ENUM('new', 'read', 'replied') DEFAULT 'new',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ==========================================
 -- SAMPLE DATA (Optional - for testing)
 -- ==========================================
 
 -- Sample Members
-INSERT INTO members (name, position, email, phone, bio, photo) VALUES
-('Ahmed Hassan', 'Captain', 'ahmed@kuet.edu.bd', '+880-1XXX-XXXX', 'Sports enthusiast and team leader', 'image/members/ahnaf_tajwar_sadi.png'),
-('Fatima Khan', 'Vice Captain', 'fatima@kuet.edu.bd', '+880-1XXX-XXXX', 'Dedicated athlete', 'image/members/ariful-islam-sheikh.png'),
-('Karim Ali', 'Treasurer', 'karim@kuet.edu.bd', '+880-1XXX-XXXX', 'Finance manager', 'image/members/hasib_mahmud.png'),
-('Md Abu Rayhan', 'Sports Coordinator', 'rayhan@kuet.edu.bd', '+880-1XXX-XXXX', 'Event organizer', 'image/members/md_abu_rayhan.png'),
-('Shariar Abdullah', 'Secretary', 'shariar@kuet.edu.bd', '+880-1XXX-XXXX', 'Team manager', 'image/members/shariar-abdullah.png'),
-('SK Mahin Ahmed', 'Joint Secretary', 'mahin@kuet.edu.bd', '+880-1XXX-XXXX', 'Assistant coordinator', 'image/members/sk_mahin_ahmed.png'),
-('Tritom Ghosh', 'Member', 'tritom@kuet.edu.bd', '+880-1XXX-XXXX', 'Dedicated player', 'image/members/tritom_ghosh.png');
+INSERT INTO members (name, position, team, email, phone, bio, photo) VALUES
+('Ahmed Hassan', 'Captain', 'Cricket Team', 'ahmed@kuet.edu.bd', '+880-1XXX-XXXX', 'Captain of cricket team and overall sports coordinator', 'image/members/ahnaf_tajwar_sadi.png'),
+('Karim Ali', 'Wicket Keeper', 'Cricket Team', 'karim@kuet.edu.bd', '+880-1XXX-XXXX', 'Skilled wicket keeper with excellent reflexes', 'image/members/hasib_mahmud.png'),
+('Md Abu Rayhan', 'All-rounder', 'Cricket Team', 'rayhan@kuet.edu.bd', '+880-1XXX-XXXX', 'Versatile player - batsman and bowler', 'image/members/md_abu_rayhan.png'),
+('Shariar Abdullah', 'Bowler', 'Cricket Team', 'shariar@kuet.edu.bd', '+880-1XXX-XXXX', 'Fast bowler with excellent record', 'image/members/shariar-abdullah.png'),
+('Fatima Khan', 'Captain', 'Football Team', 'fatima@kuet.edu.bd', '+880-1XXX-XXXX', 'Captain and midfielder of football team', 'image/members/ariful-islam-sheikh.png'),
+('SK Mahin Ahmed', 'Goalkeeper', 'Football Team', 'mahin@kuet.edu.bd', '+880-1XXX-XXXX', 'Expert goalkeeper with strong defense skills', 'image/members/sk_mahin_ahmed.png'),
+('Tritom Ghosh', 'Forward', 'Football Team', 'tritom@kuet.edu.bd', '+880-1XXX-XXXX', 'Striker with excellent goal-scoring ability', 'image/members/tritom_ghosh.png'),
+('Ahnaf Tajwar Sadi', 'Captain', 'Badminton Team', 'ahnaf@kuet.edu.bd', '+880-1XXX-XXXX', 'Badminton champion and team leader', 'image/members/ahnaf_tajwar_sadi.png'),
+('Ariful Islam Sheikh', 'Player', 'Basketball Team', 'ariful@kuet.edu.bd', '+880-1XXX-XXXX', 'Basketball player with good team coordination', 'image/members/ariful-islam-sheikh.png'),
+('Hasib Mahmud', 'Vice Captain', 'Badminton Team', 'hasib@kuet.edu.bd', '+880-1XXX-XXXX', 'Vice captain and doubles expert', 'image/members/hasib_mahmud.png');
 
 -- Sample Events
 INSERT INTO events (title, description, date, time, location, image, status) VALUES

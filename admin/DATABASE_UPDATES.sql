@@ -1,3 +1,6 @@
+-- Add team field to members table if it doesn't exist
+ALTER TABLE members ADD COLUMN team VARCHAR(100) DEFAULT 'General' AFTER position;
+
 -- Create registrations table for event registrations
 CREATE TABLE IF NOT EXISTS registrations (
     id INT PRIMARY KEY AUTO_INCREMENT,

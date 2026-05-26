@@ -1,3 +1,46 @@
+<?php
+// ====================================
+// Backend: Handle Contact Form
+// ====================================
+
+require_once 'admin/includes/db.php';
+
+$message = "";
+$error = "";
+$form_submitted = false;
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $full_name = trim($_POST['fullname'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $message_text = trim($_POST['message'] ?? '');
+    
+    // Validation
+    if (empty($full_name) || empty($email) || empty($message_text)) {
+        $error = "All fields are required!";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Please enter a valid email address!";
+    } else {
+        // Save to database
+        $query = "INSERT INTO contact_messages (full_name, email, message) VALUES (?, ?, ?)";
+        $stmt = mysqli_prepare($conn, $query);
+        
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, "sss", $full_name, $email, $message_text);
+            
+            if (mysqli_stmt_execute($stmt)) {
+                $message = "Thank you! Your message has been sent successfully. We'll get back to you soon!";
+                $form_submitted = true;
+            } else {
+                $error = "An error occurred. Please try again later.";
+            }
+            mysqli_stmt_close($stmt);
+        } else {
+            $error = "Database error. Please try again later.";
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +49,26 @@
     <meta name="description" content="Contact us - Organization of KUET Sports">
     <title>Contact - Organization of KUET Sports</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .contact-message {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .contact-message.success {
+            background: #dff0d8;
+            border-left: 4px solid #5cb85c;
+            color: #3c763d;
+        }
+
+        .contact-message.error {
+            background: #f8d7da;
+            border-left: 4px solid #f44336;
+            color: #721c24;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -13,15 +76,15 @@
         <div class="navbar-container">
             <div class="logo">
                 <img src="image/home/logo.png" alt="KUET Sports Logo" class="navbar-logo">
-                <a href="home.html" style="color: var(--secondary-blue); text-decoration: none;">KUET Sports</a>
+                <a href="home.php" style="color: var(--secondary-blue); text-decoration: none;">KUET Sports</a>
             </div>
             <ul class="nav-links">
-                <li><a href="home.html" class="nav-link">Home</a></li>
-                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="home.php" class="nav-link">Home</a></li>
+                <li><a href="about.php" class="nav-link">About</a></li>
                 <li><a href="members.php" class="nav-link">Members</a></li>
                 <li><a href="events.php" class="nav-link">Events</a></li>
                 <li><a href="gallery.php" class="nav-link">Gallery</a></li>
-                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="contact.php" class="nav-link">Contact</a></li>
                 <li><a href="admin/login.php" class="nav-link" style="color: #ff6b6b;">Admin</a></li>
             </ul>
             <button class="login-btn" id="loginBtn">Login</button>
@@ -127,18 +190,27 @@
                 <!-- Contact Form -->
                 <div class="contact-form">
                     <h3>Send us a Message</h3>
-                    <form id="contactForm">
+                    
+                    <?php if (!empty($message)): ?>
+                        <div class="contact-message success"><?php echo htmlspecialchars($message); ?></div>
+                    <?php endif; ?>
+                    
+                    <?php if (!empty($error)): ?>
+                        <div class="contact-message error"><?php echo htmlspecialchars($error); ?></div>
+                    <?php endif; ?>
+                    
+                    <form method="POST" id="contactForm">
                         <div class="form-group">
                             <label for="fullname" class="form-label">Full Name</label>
-                            <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
+                            <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required value="<?php echo $form_submitted ? '' : (isset($_POST['fullname']) ? htmlspecialchars($_POST['fullname']) : ''); ?>">
                         </div>
                         <div class="form-group">
                             <label for="email" class="form-label">Email Address</label>
-                            <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                            <input type="email" id="email" name="email" placeholder="Enter your email address" required value="<?php echo $form_submitted ? '' : (isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''); ?>">
                         </div>
                         <div class="form-group">
                             <label for="message" class="form-label">Message</label>
-                            <textarea id="message" name="message" placeholder="Enter your message" rows="6" required></textarea>
+                            <textarea id="message" name="message" placeholder="Enter your message" rows="6" required><?php echo $form_submitted ? '' : (isset($_POST['message']) ? htmlspecialchars($_POST['message']) : ''); ?></textarea>
                         </div>
                         <button type="submit" class="submit-btn">Send Message</button>
                     </form>
@@ -156,6 +228,5 @@
     </footer>
 
     <script src="main.js"></script>
-</body>
 </body>
 </html>

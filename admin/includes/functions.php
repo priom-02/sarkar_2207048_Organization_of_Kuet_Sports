@@ -57,20 +57,20 @@ function get_member($conn, $id) {
 /**
  * Add new member
  */
-function add_member($conn, $name, $position, $email, $phone, $bio, $photo) {
-    $query = "INSERT INTO members (name, position, email, phone, bio, photo) VALUES (?, ?, ?, ?, ?, ?)";
+function add_member($conn, $name, $position, $team, $email, $phone, $bio, $photo) {
+    $query = "INSERT INTO members (name, position, team, email, phone, bio, photo) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, "ssssss", $name, $position, $email, $phone, $bio, $photo);
+    mysqli_stmt_bind_param($stmt, "sssssss", $name, $position, $team, $email, $phone, $bio, $photo);
     return mysqli_stmt_execute($stmt);
 }
 
 /**
  * Update member
  */
-function update_member($conn, $id, $name, $position, $email, $phone, $bio, $photo) {
-    $query = "UPDATE members SET name=?, position=?, email=?, phone=?, bio=?, photo=? WHERE id=?";
+function update_member($conn, $id, $name, $position, $team, $email, $phone, $bio, $photo) {
+    $query = "UPDATE members SET name=?, position=?, team=?, email=?, phone=?, bio=?, photo=? WHERE id=?";
     $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, "ssssssi", $name, $position, $email, $phone, $bio, $photo, $id);
+    mysqli_stmt_bind_param($stmt, "sssssssi", $name, $position, $team, $email, $phone, $bio, $photo, $id);
     return mysqli_stmt_execute($stmt);
 }
 
