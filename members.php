@@ -6,9 +6,22 @@
 // Connect to database
 require_once 'admin/includes/db.php';
 
+// Get team filter from URL parameter if provided
+$team_filter = isset($_GET['team']) ? htmlspecialchars($_GET['team']) : null;
+$page_title = "Members";
+
 // Fetch all members ordered by team and position
-$query = "SELECT * FROM members ORDER BY team ASC, FIELD(position, 'Captain', 'Vice Captain', 'Goalkeeper', 'Wicket Keeper', 'All-rounder', 'Bowler', 'Forward', 'Midfielder', 'Defender', 'Player'), name ASC";
-$result = mysqli_query($conn, $query);
+if ($team_filter) {
+    $query = "SELECT * FROM members WHERE team = ? ORDER BY FIELD(position, 'Captain', 'Vice Captain', 'Goalkeeper', 'Wicket Keeper', 'All-rounder', 'Bowler', 'Forward', 'Midfielder', 'Defender', 'Player'), name ASC";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 's', $team_filter);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $page_title = htmlspecialchars($team_filter) . " - Members";
+} else {
+    $query = "SELECT * FROM members ORDER BY team ASC, FIELD(position, 'Captain', 'Vice Captain', 'Goalkeeper', 'Wicket Keeper', 'All-rounder', 'Bowler', 'Forward', 'Midfielder', 'Defender', 'Player'), name ASC";
+    $result = mysqli_query($conn, $query);
+}
 
 if (!$result) {
     die("Query failed: " . mysqli_error($conn));
@@ -82,7 +95,7 @@ if (count($teams) > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Members - Organization of KUET Sports">
-    <title>Members - Organization of KUET Sports</title>
+    <title><?php echo $page_title; ?> - Organization of KUET Sports</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         .members {
@@ -365,7 +378,12 @@ if (count($teams) > 0) {
     <!-- Members Section -->
     <section id="members" class="members">
         <div class="container">
-            <h2 class="section-title">Our Teams</h2>
+            <h2 class="section-title"><?php echo $team_filter ? htmlspecialchars($team_filter) . ' Members' : 'Our Teams'; ?></h2>
+            <?php if ($team_filter): ?>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <a href="members.php" style="color: #0066cc; text-decoration: none; font-weight: 500;">← Back to All Teams</a>
+                </div>
+            <?php endif; ?>
             <div class="teams-container">
                 <?php echo $teamsHTML; ?>
             </div>

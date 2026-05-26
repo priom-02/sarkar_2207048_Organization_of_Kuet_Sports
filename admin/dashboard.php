@@ -168,25 +168,25 @@ $new_contacts = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count
             
             <div class="modules">
                 <a href="members/index.php" class="module">
-                    <h3>👥 Members</h3>
+                    <h3>Members</h3>
                     <p class="count"><?php echo $members_count; ?> Members</p>
                     <p>Manage organization members</p>
                 </a>
                 
                 <a href="events/index.php" class="module">
-                    <h3>📅 Events</h3>
+                    <h3>Events</h3>
                     <p class="count"><?php echo $events_count; ?> Events</p>
                     <p>Create and manage sports events</p>
                 </a>
                 
                 <a href="gallery/index.php" class="module">
-                    <h3>🖼️ Gallery</h3>
+                    <h3>Gallery</h3>
                     <p class="count"><?php echo $gallery_count; ?> Photos</p>
                     <p>Upload and organize photos</p>
                 </a>
                 
                 <a href="contacts/index.php" class="module">
-                    <h3>💬 Contacts</h3>
+                    <h3>Contacts</h3>
                     <p class="count"><?php echo $new_contacts; ?> New</p>
                     <p><?php echo $contacts_count; ?> Total Messages</p>
                 </a>

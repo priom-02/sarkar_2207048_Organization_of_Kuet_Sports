@@ -318,7 +318,7 @@ if (count($events) > 0) {
         <div class="navbar-container">
             <div class="logo">
                 <img src="image/home/logo.png" alt="KUET Sports Logo" class="navbar-logo">
-                <a href="home.html" style="color: var(--secondary-blue); text-decoration: none;">KUET Sports</a>
+                <a href="home.php" style="color: var(--secondary-blue); text-decoration: none;">KUET Sports</a>
             </div>
             <ul class="nav-links">
                 <li><a href="home.php" class="nav-link">Home</a></li>

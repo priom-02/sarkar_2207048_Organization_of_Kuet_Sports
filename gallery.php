@@ -10,6 +10,9 @@ if (!$conn) {
     die("Database connection failed!");
 }
 
+// Get category filter from URL parameter if provided
+$active_filter = isset($_GET['category']) ? htmlspecialchars($_GET['category']) : 'all';
+
 // Fetch all gallery items
 $query = "SELECT * FROM gallery ORDER BY uploaded_at DESC";
 $result = mysqli_query($conn, $query);
@@ -26,11 +29,12 @@ while ($row = mysqli_fetch_assoc($result)) {
 mysqli_close($conn);
 
 // Generate filter buttons HTML
-$filterHTML = '<button class="filter-btn active" data-filter="all">All</button>';
+$filterHTML = '<button class="filter-btn' . ($active_filter === 'all' ? ' active' : '') . '" data-filter="all">All</button>';
 
 foreach ($categories as $cat) {
     if ($cat !== 'all') {
-        $filterHTML .= '<button class="filter-btn" data-filter="' . htmlspecialchars($cat) . '">' . ucfirst(htmlspecialchars($cat)) . '</button>';
+        $active_class = ($active_filter === $cat) ? ' active' : '';
+        $filterHTML .= '<button class="filter-btn' . $active_class . '" data-filter="' . htmlspecialchars($cat) . '">' . ucfirst(htmlspecialchars($cat)) . '</button>';
     }
 }
 
@@ -40,9 +44,10 @@ $galleryHTML = '';
 if (count($gallery) > 0) {
     foreach ($gallery as $item) {
         $category = $item['category'] ?? 'other';
+        $should_display = ($active_filter === 'all' || $active_filter === $category) ? 'block' : 'none';
         $galleryHTML .= '
                 <!-- Gallery Item -->
-                <div class="gallery-item" data-category="' . htmlspecialchars($category) . '">
+                <div class="gallery-item" data-category="' . htmlspecialchars($category) . '" style="display: ' . $should_display . ';">
                     <div class="gallery-image">
                         <img src="' . htmlspecialchars($item['image']) . '" alt="' . htmlspecialchars($item['title']) . '" class="gallery-photo">
                         <div class="gallery-overlay">
@@ -78,7 +83,7 @@ if (count($gallery) > 0) {
         <div class="navbar-container">
             <div class="logo">
                 <img src="image/home/logo.png" alt="KUET Sports Logo" class="navbar-logo">
-                <a href="home.html" style="color: var(--secondary-blue); text-decoration: none;">KUET Sports</a>
+                <a href="home.php" style="color: var(--secondary-blue); text-decoration: none;">KUET Sports</a>
             </div>
             <ul class="nav-links">
                 <li><a href="home.php" class="nav-link">Home</a></li>
@@ -151,6 +156,13 @@ if (count($gallery) > 0) {
         <div class="container">
             <h2 class="section-title">Gallery</h2>
             <p class="gallery-subtitle">Explore our memorable moments and sporting events</p>
+            
+            <?php if ($active_filter !== 'all'): ?>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <a href="gallery.php" style="color: #0066cc; text-decoration: none; font-weight: 500;">← View All Photos</a>
+                    <p style="color: #666; font-size: 14px; margin-top: 5px;">Currently viewing: <strong><?php echo ucfirst(htmlspecialchars($active_filter)); ?></strong></p>
+                </div>
+            <?php endif; ?>
             
             <!-- Gallery Filter -->
             <div class="gallery-filter" id="galleryFilter">

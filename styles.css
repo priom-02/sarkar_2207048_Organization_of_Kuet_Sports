@@ -636,8 +636,12 @@ p {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--spacing-lg);
-    margin: var(--spacing-xl) 0;
+    margin: var(--spacing-xl) auto;
     text-align: center;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
 }
 
 .stat-card {
@@ -646,6 +650,12 @@ p {
     border-radius: 10px;
     border: 2px solid var(--secondary-blue);
     transition: var(--transition-normal);
+    width: 150px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .stat-card:hover {
@@ -855,6 +865,17 @@ p {
     line-height: 1.6;
 }
 
+.sport-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.sport-card-link:hover {
+    transform: scale(1.02);
+}
+
 /* Table Styles */
 .table-wrapper {
     overflow-x: auto;
@@ -967,6 +988,17 @@ p {
     color: rgba(255, 255, 255, 0.95);
     font-size: 0.95rem;
     line-height: 1.8;
+}
+
+.achievement-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.achievement-card-link:hover {
+    transform: scale(1.02);
 }
 
 /* Responsive Design */

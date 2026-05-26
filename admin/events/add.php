@@ -18,17 +18,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $date = trim($_POST['date'] ?? '');
     $time = trim($_POST['time'] ?? '');
     $location = trim($_POST['location'] ?? '');
-    $image = trim($_POST['image'] ?? '');
+    $image = 'image/events/default.png'; // Default image path
     $status = trim($_POST['status'] ?? 'upcoming');
     
     if (empty($title) || empty($date)) {
         $error = "Title and Date are required!";
     } else {
-        if (add_event($conn, $title, $description, $date, $time, $location, $image, $status)) {
-            header("Location: index.php");
-            exit();
-        } else {
-            $error = "Failed to add event. Please try again.";
+        // Handle image upload
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+            $upload_dir = '../../image/events/';
+            
+            // Create directory if it doesn't exist
+            if (!is_dir($upload_dir)) {
+                mkdir($upload_dir, 0755, true);
+            }
+            
+            // Validate file type by extension
+            $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $file_name = $_FILES['image']['name'];
+            $file_extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+            
+            if (!in_array($file_extension, $allowed_extensions)) {
+                $error = "Invalid file type. Only JPG, PNG, GIF, and WEBP are allowed!";
+            } else if ($_FILES['image']['size'] > 5 * 1024 * 1024) { // 5MB limit
+                $error = "File size exceeds 5MB limit!";
+            } else {
+                $filename = time() . '_' . preg_replace("/[^a-zA-Z0-9._-]/", "", $file_name);
+                $upload_path = $upload_dir . $filename;
+                
+                if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
+                    $image = 'image/events/' . $filename;
+                } else {
+                    $error = "Failed to upload image. Please try again.";
+                }
+            }
+        }
+        
+        if (empty($error)) {
+            if (add_event($conn, $title, $description, $date, $time, $location, $image, $status)) {
+                header("Location: index.php");
+                exit();
+            } else {
+                $error = "Failed to add event. Please try again.";
+            }
         }
     }
 }
@@ -190,7 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="error"><?php echo $error; ?></div>
             <?php endif; ?>
             
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="title">Event Title *</label>
                     <input type="text" id="title" name="title" required>
@@ -226,8 +258,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 
                 <div class="form-group">
-                    <label for="image">Image Path</label>
-                    <input type="text" id="image" name="image" placeholder="e.g., events/cricket.jpg">
+                    <label for="image">Event Image (JPG, PNG, GIF, WEBP - Max 5MB)</label>
+                    <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/gif,image/webp">
+                    <small style="color: #999; display: block; margin-top: 5px;">Upload an image for the event. If not provided, a default image will be used.</small>
                 </div>
                 
                 <div class="button-group">

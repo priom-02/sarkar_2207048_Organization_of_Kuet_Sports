@@ -27,16 +27,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email'] ?? '');
     $phone = trim($_POST['phone'] ?? '');
     $bio = trim($_POST['bio'] ?? '');
-    $photo = trim($_POST['photo'] ?? '');
+    $photo = $member['photo']; // Keep existing photo by default
     
     if (empty($name) || empty($position) || empty($team)) {
         $error = "Name, Position, and Team are required!";
     } else {
-        if (update_member($conn, $id, $name, $position, $team, $email, $phone, $bio, $photo)) {
-            header("Location: index.php");
-            exit();
-        } else {
-            $error = "Failed to update member. Please try again.";
+        // Handle photo upload if a new file is provided
+        if (isset($_FILES['photo']) && $_FILES['photo']['error'] == 0) {
+            $upload_dir = '../../image/members/';
+            
+            // Create directory if it doesn't exist
+            if (!is_dir($upload_dir)) {
+                mkdir($upload_dir, 0755, true);
+            }
+            
+            // Validate file type by extension
+            $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $file_name = $_FILES['photo']['name'];
+            $file_extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+            
+            if (!in_array($file_extension, $allowed_extensions)) {
+                $error = "Invalid file type. Only JPG, PNG, GIF, and WEBP are allowed!";
+            } else if ($_FILES['photo']['size'] > 5 * 1024 * 1024) { // 5MB limit
+                $error = "File size exceeds 5MB limit!";
+            } else {
+                $filename = time() . '_' . preg_replace("/[^a-zA-Z0-9._-]/", "", $file_name);
+                $upload_path = $upload_dir . $filename;
+                
+                if (move_uploaded_file($_FILES['photo']['tmp_name'], $upload_path)) {
+                    // Delete old photo if it exists and is not a default image
+                    if (!empty($member['photo']) && strpos($member['photo'], 'default') === false && file_exists('../../' . $member['photo'])) {
+                        unlink('../../' . $member['photo']);
+                    }
+                    $photo = 'image/members/' . $filename;
+                } else {
+                    $error = "Failed to upload photo. Please try again.";
+                }
+            }
+        }
+        
+        if (empty($error)) {
+            if (update_member($conn, $id, $name, $position, $team, $email, $phone, $bio, $photo)) {
+                header("Location: index.php");
+                exit();
+            } else {
+                $error = "Failed to update member. Please try again.";
+            }
         }
     }
 }
@@ -198,7 +234,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="error"><?php echo $error; ?></div>
             <?php endif; ?>
             
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="name">Full Name *</label>
                     <input type="text" id="name" name="name" value="<?php echo sanitize($member['name']); ?>" required>
@@ -239,8 +275,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 
                 <div class="form-group">
-                    <label for="photo">Photo Path</label>
-                    <input type="text" id="photo" name="photo" value="<?php echo sanitize($member['photo'] ?? ''); ?>">
+                    <label for="photo">Member Photo (JPG, PNG, GIF, WEBP - Max 5MB)</label>
+                    <?php if (!empty($member['photo'])): ?>
+                        <div style="margin-bottom: 10px;">
+                            <img src="../../<?php echo htmlspecialchars($member['photo']); ?>" alt="Current photo" style="max-width: 150px; max-height: 150px; border-radius: 5px;">
+                            <p style="font-size: 12px; color: #999; margin-top: 5px;">Current photo</p>
+                        </div>
+                    <?php endif; ?>
+                    <input type="file" id="photo" name="photo" accept="image/jpeg,image/png,image/gif,image/webp">
+                    <small style="color: #999; display: block; margin-top: 5px;">Upload a new photo to replace the current one, or leave empty to keep the existing photo.</small>
                 </div>
                 
                 <div class="button-group">

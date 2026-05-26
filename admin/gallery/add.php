@@ -15,17 +15,51 @@ $error = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = trim($_POST['title'] ?? '');
     $category = trim($_POST['category'] ?? '');
-    $image = trim($_POST['image'] ?? '');
+    $image = ''; // Will be set by file upload
     $description = trim($_POST['description'] ?? '');
     
-    if (empty($title) || empty($image)) {
-        $error = "Title and Image Path are required!";
+    if (empty($title)) {
+        $error = "Title is required!";
     } else {
-        if (add_gallery($conn, $title, $category, $image, $description)) {
-            header("Location: index.php");
-            exit();
+        // Handle image upload
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+            $upload_dir = '../../image/gallery/';
+            
+            // Create directory if it doesn't exist
+            if (!is_dir($upload_dir)) {
+                mkdir($upload_dir, 0755, true);
+            }
+            
+            // Validate file type by extension
+            $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $file_name = $_FILES['image']['name'];
+            $file_extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+            
+            if (!in_array($file_extension, $allowed_extensions)) {
+                $error = "Invalid file type. Only JPG, PNG, GIF, and WEBP are allowed!";
+            } else if ($_FILES['image']['size'] > 5 * 1024 * 1024) { // 5MB limit
+                $error = "File size exceeds 5MB limit!";
+            } else {
+                $filename = time() . '_' . preg_replace("/[^a-zA-Z0-9._-]/", "", $file_name);
+                $upload_path = $upload_dir . $filename;
+                
+                if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
+                    $image = 'image/gallery/' . $filename;
+                } else {
+                    $error = "Failed to upload image. Please try again.";
+                }
+            }
         } else {
-            $error = "Failed to add photo. Please try again.";
+            $error = "Image is required!";
+        }
+        
+        if (empty($error)) {
+            if (add_gallery($conn, $title, $category, $image, $description)) {
+                header("Location: index.php");
+                exit();
+            } else {
+                $error = "Failed to add photo. Please try again.";
+            }
         }
     }
 }
@@ -187,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="error"><?php echo $error; ?></div>
             <?php endif; ?>
             
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="title">Photo Title *</label>
                     <input type="text" id="title" name="title" required>
@@ -207,8 +241,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 
                 <div class="form-group">
-                    <label for="image">Image Path *</label>
-                    <input type="text" id="image" name="image" placeholder="e.g., gallery/photo.jpg" required>
+                    <label for="image">Photo Image (JPG, PNG, GIF, WEBP - Max 5MB) *</label>
+                    <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/gif,image/webp" required>
+                    <small style="color: #999; display: block; margin-top: 5px;">Upload a photo to add to the gallery.</small>
                 </div>
                 
                 <div class="form-group">

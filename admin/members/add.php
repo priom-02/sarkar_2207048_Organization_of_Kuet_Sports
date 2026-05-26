@@ -20,17 +20,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email'] ?? '');
     $phone = trim($_POST['phone'] ?? '');
     $bio = trim($_POST['bio'] ?? '');
-    $photo = trim($_POST['photo'] ?? '');
+    $photo = 'image/members/default.png'; // Default photo path
     
     if (empty($name) || empty($position) || empty($team)) {
         $error = "Name, Position, and Team are required!";
     } else {
-        if (add_member($conn, $name, $position, $team, $email, $phone, $bio, $photo)) {
-            $message = "Member added successfully!";
-            header("Location: index.php");
-            exit();
-        } else {
-            $error = "Failed to add member. Please try again.";
+        // Handle photo upload
+        if (isset($_FILES['photo']) && $_FILES['photo']['error'] == 0) {
+            $upload_dir = '../../image/members/';
+            
+            // Create directory if it doesn't exist
+            if (!is_dir($upload_dir)) {
+                mkdir($upload_dir, 0755, true);
+            }
+            
+            // Validate file type by extension
+            $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $file_name = $_FILES['photo']['name'];
+            $file_extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+            
+            if (!in_array($file_extension, $allowed_extensions)) {
+                $error = "Invalid file type. Only JPG, PNG, GIF, and WEBP are allowed!";
+            } else if ($_FILES['photo']['size'] > 5 * 1024 * 1024) { // 5MB limit
+                $error = "File size exceeds 5MB limit!";
+            } else {
+                $filename = time() . '_' . preg_replace("/[^a-zA-Z0-9._-]/", "", $file_name);
+                $upload_path = $upload_dir . $filename;
+                
+                if (move_uploaded_file($_FILES['photo']['tmp_name'], $upload_path)) {
+                    $photo = 'image/members/' . $filename;
+                } else {
+                    $error = "Failed to upload photo. Please try again.";
+                }
+            }
+        }
+        
+        if (empty($error)) {
+            if (add_member($conn, $name, $position, $team, $email, $phone, $bio, $photo)) {
+                $message = "Member added successfully!";
+                header("Location: index.php");
+                exit();
+            } else {
+                $error = "Failed to add member. Please try again.";
+            }
         }
     }
 }
@@ -205,7 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="message success"><?php echo $message; ?></div>
             <?php endif; ?>
             
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="name">Full Name *</label>
                     <input type="text" id="name" name="name" required>
@@ -246,8 +278,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 
                 <div class="form-group">
-                    <label for="photo">Photo Path</label>
-                    <input type="text" id="photo" name="photo" placeholder="e.g., members/photo.jpg">
+                    <label for="photo">Member Photo (JPG, PNG, GIF, WEBP - Max 5MB)</label>
+                    <input type="file" id="photo" name="photo" accept="image/jpeg,image/png,image/gif,image/webp">
+                    <small style="color: #999; display: block; margin-top: 5px;">Upload a photo of the member. If not provided, a default image will be used.</small>
                 </div>
                 
                 <div class="button-group">

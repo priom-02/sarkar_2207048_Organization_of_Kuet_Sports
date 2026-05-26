@@ -136,46 +136,62 @@
             <!-- Sports Categories -->
             <h3 class="subsection-title">Our Sports Departments</h3>
             <div class="sports-cards">
-                <div class="sport-card">
-                    <div class="sport-icon">01</div>
-                    <h4>Football</h4>
-                    <p>Men's and women's football teams competing in university and inter-university tournaments.</p>
-                </div>
-                <div class="sport-card">
-                    <div class="sport-icon">02</div>
-                    <h4>Cricket</h4>
-                    <p>Premier cricket tournaments including T20, ODI formats. Regular practice sessions.</p>
-                </div>
-                <div class="sport-card">
-                    <div class="sport-icon">03</div>
-                    <h4>Badminton</h4>
-                    <p>Singles and doubles competition. Inter-departmental badminton championships yearly.</p>
-                </div>
-                <div class="sport-card">
-                    <div class="sport-icon">04</div>
-                    <h4>Tennis</h4>
-                    <p>Professional coaching and training. University ranking tournaments.</p>
-                </div>
-                <div class="sport-card">
-                    <div class="sport-icon">05</div>
-                    <h4>Volleyball</h4>
-                    <p>Men and women's volleyball leagues with quarterly tournaments.</p>
-                </div>
-                <div class="sport-card">
-                    <div class="sport-icon">06</div>
-                    <h4>Athletics</h4>
-                    <p>Track and field events including sprints, long-distance, and field events.</p>
-                </div>
-                <div class="sport-card">
-                    <div class="sport-icon">07</div>
-                    <h4>Chess</h4>
-                    <p>Strategic thinking competitions and chess tournaments throughout the year.</p>
-                </div>
-                <div class="sport-card">
-                    <div class="sport-icon">08</div>
-                    <h4>Combat Sports</h4>
-                    <p>Boxing, martial arts, and wrestling training programs available.</p>
-                </div>
+                <a href="members.php?team=Football+Team" class="sport-card-link">
+                    <div class="sport-card">
+                        <div class="sport-icon">01</div>
+                        <h4>Football</h4>
+                        <p>Men's and women's football teams competing in university and inter-university tournaments.</p>
+                    </div>
+                </a>
+                <a href="members.php?team=Cricket+Team" class="sport-card-link">
+                    <div class="sport-card">
+                        <div class="sport-icon">02</div>
+                        <h4>Cricket</h4>
+                        <p>Premier cricket tournaments including T20, ODI formats. Regular practice sessions.</p>
+                    </div>
+                </a>
+                <a href="members.php?team=Badminton+Team" class="sport-card-link">
+                    <div class="sport-card">
+                        <div class="sport-icon">03</div>
+                        <h4>Badminton</h4>
+                        <p>Singles and doubles competition. Inter-departmental badminton championships yearly.</p>
+                    </div>
+                </a>
+                <a href="members.php?team=Tennis+Team" class="sport-card-link">
+                    <div class="sport-card">
+                        <div class="sport-icon">04</div>
+                        <h4>Tennis</h4>
+                        <p>Professional coaching and training. University ranking tournaments.</p>
+                    </div>
+                </a>
+                <a href="members.php?team=Volleyball+Team" class="sport-card-link">
+                    <div class="sport-card">
+                        <div class="sport-icon">05</div>
+                        <h4>Volleyball</h4>
+                        <p>Men and women's volleyball leagues with quarterly tournaments.</p>
+                    </div>
+                </a>
+                <a href="members.php?team=Athletics+Team" class="sport-card-link">
+                    <div class="sport-card">
+                        <div class="sport-icon">06</div>
+                        <h4>Athletics</h4>
+                        <p>Track and field events including sprints, long-distance, and field events.</p>
+                    </div>
+                </a>
+                <a href="members.php?team=Chess+Team" class="sport-card-link">
+                    <div class="sport-card">
+                        <div class="sport-icon">07</div>
+                        <h4>Chess</h4>
+                        <p>Strategic thinking competitions and chess tournaments throughout the year.</p>
+                    </div>
+                </a>
+                <a href="members.php?team=Combat+Sports" class="sport-card-link">
+                    <div class="sport-card">
+                        <div class="sport-icon">08</div>
+                        <h4>Combat Sports</h4>
+                        <p>Boxing, martial arts, and wrestling training programs available.</p>
+                    </div>
+                </a>
             </div>
 
             <!-- Facilities Table -->
@@ -238,26 +254,34 @@
             <!-- Achievements Timeline -->
             <h3 class="subsection-title">Major Achievements</h3>
             <div class="achievements-grid">
-                <div class="achievement-card">
-                    <div class="achievement-year">2024</div>
-                    <h4>National Champions</h4>
-                    <p>Won inter-university football championship. 2nd place in cricket nationals.</p>
-                </div>
-                <div class="achievement-card">
-                    <div class="achievement-year">2023</div>
-                    <h4>Facility Expansion</h4>
-                    <p>New athletic track and upgraded gym facilities inaugurated.</p>
-                </div>
-                <div class="achievement-card">
-                    <div class="achievement-year">2022</div>
-                    <h4>Record Participation</h4>
-                    <p>3,500+ students participated in annual sports fest. Biggest event yet.</p>
-                </div>
-                <div class="achievement-card">
-                    <div class="achievement-year">2021</div>
-                    <h4>Organization Founded</h4>
-                    <p>Official establishment of Organization of KUET Sports with 8 founding members.</p>
-                </div>
+                <a href="gallery.php?category=event" class="achievement-card-link">
+                    <div class="achievement-card">
+                        <div class="achievement-year">2024</div>
+                        <h4>National Champions</h4>
+                        <p>Won inter-university football championship. 2nd place in cricket nationals.</p>
+                    </div>
+                </a>
+                <a href="gallery.php?category=team" class="achievement-card-link">
+                    <div class="achievement-card">
+                        <div class="achievement-year">2023</div>
+                        <h4>Facility Expansion</h4>
+                        <p>New athletic track and upgraded gym facilities inaugurated.</p>
+                    </div>
+                </a>
+                <a href="gallery.php?category=event" class="achievement-card-link">
+                    <div class="achievement-card">
+                        <div class="achievement-year">2022</div>
+                        <h4>Record Participation</h4>
+                        <p>3,500+ students participated in annual sports fest. Biggest event yet.</p>
+                    </div>
+                </a>
+                <a href="gallery.php?category=team" class="achievement-card-link">
+                    <div class="achievement-card">
+                        <div class="achievement-year">2021</div>
+                        <h4>Organization Founded</h4>
+                        <p>Official establishment of Organization of KUET Sports with 8 founding members.</p>
+                    </div>
+                </a>
             </div>
         </div>
     </section>
