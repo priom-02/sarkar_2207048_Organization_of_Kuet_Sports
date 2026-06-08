@@ -293,23 +293,157 @@ function initLoginModal() {
         });
     });
 
-    // Form submission
-    const signinForm = document.getElementById('signinForm');
-    const signupForm = document.getElementById('signupForm');
-
-    if (signinForm) {
-        signinForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            showToast('Sign In successful!', 'success');
-            loginModal.classList.remove('active');
+    // Logout functionality
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            const formData = new FormData();
+            formData.append('action', 'logout');
+            
+            fetch('auth-backend.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('Logged out successfully', 'success');
+                    setTimeout(() => {
+                        window.location.href = data.redirect || 'home.php';
+                    }, 1500);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('An error occurred. Please try again.', 'error');
+            });
         });
     }
 
+    // Form submission - Sign In
+    const signinForm = document.getElementById('signinForm');
+    if (signinForm) {
+        signinForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = signinForm.querySelector('input[name="email"]').value.trim();
+            const password = signinForm.querySelector('input[name="password"]').value;
+            
+            console.log('Signin Form Data:', { email, password: '***' });
+            
+            if (!email || !password) {
+                showToast('Please fill all fields', 'error');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('action', 'signin');
+            formData.append('email', email);
+            formData.append('password', password);
+            
+            console.log('Sending signin request to auth-backend.php');
+            
+            fetch('auth-backend.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data:', data);
+                
+                if (data.success) {
+                    showToast(data.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = data.redirect || 'home.php';
+                    }, 1500);
+                } else {
+                    showToast(data.message || 'Signin failed', 'error');
+                    console.error('Signin error details:', data);
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                showToast('An error occurred. Please try again.', 'error');
+            });
+        });
+    }
+
+    // Form submission - Sign Up
+    const signupForm = document.getElementById('signupForm');
     if (signupForm) {
         signupForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            showToast('Account created successfully!', 'success');
-            loginModal.classList.remove('active');
+            
+            // Get form values using name attributes
+            const full_name = signupForm.querySelector('input[name="full_name"]').value.trim();
+            const email = signupForm.querySelector('input[name="email"]').value.trim();
+            const password = signupForm.querySelector('input[name="password"]').value;
+            const confirm_password = signupForm.querySelector('input[name="confirm_password"]').value;
+            const team = signupForm.querySelector('select[name="team"]').value;
+            const terms = signupForm.querySelector('input[name="terms"]').checked;
+            
+            console.log('Signup Form Data:', { full_name, email, team, password: '***', confirm_password: '***', terms });
+            
+            if (!full_name || !email || !password || !confirm_password) {
+                showToast('Please fill all fields', 'error');
+                return;
+            }
+            
+            if (!terms) {
+                showToast('Please agree to terms and conditions', 'error');
+                return;
+            }
+            
+            if (password !== confirm_password) {
+                showToast('Passwords do not match', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showToast('Password must be at least 6 characters', 'error');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('action', 'signup');
+            formData.append('full_name', full_name);
+            formData.append('email', email);
+            formData.append('team', team);
+            formData.append('password', password);
+            formData.append('confirm_password', confirm_password);
+            
+            console.log('Sending signup request to auth-backend.php');
+            
+            fetch('auth-backend.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data:', data);
+                
+                if (data.success) {
+                    showToast(data.message, 'success');
+                    // Clear form
+                    signupForm.reset();
+                    setTimeout(() => {
+                        window.location.href = data.redirect || 'home.php';
+                    }, 1500);
+                } else {
+                    showToast(data.message || 'Signup failed', 'error');
+                    console.error('Signup error details:', data);
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                showToast('An error occurred. Please try again.', 'error');
+            });
         });
     }
 }

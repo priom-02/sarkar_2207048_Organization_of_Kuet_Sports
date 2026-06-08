@@ -432,6 +432,34 @@ p {
     text-decoration: underline;
 }
 
+/* User Menu (When Logged In) */
+.user-menu {
+    text-align: center;
+}
+
+.user-menu h2 {
+    color: var(--accent-blue);
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.user-menu p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 20px;
+}
+
+.user-menu .submit-btn {
+    background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+}
+
+.user-menu .submit-btn:last-child {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+}
+
+.user-menu .submit-btn:last-child:hover {
+    box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+}
+
 @media (max-width: 768px) {
     .login-container {
         padding: 30px;
@@ -1890,4 +1918,67 @@ p {
 
 .footer p:first-child {
     font-weight: 600;
+}
+
+/* ===================================
+   TOAST NOTIFICATIONS
+   =================================== */
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 16px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    max-width: 400px;
+    word-wrap: break-word;
+    animation: slideIn 0.3s ease-in-out;
+}
+
+.toast-success {
+    background-color: #28a745;
+    border-left: 4px solid #20c997;
+}
+
+.toast-error {
+    background-color: #dc3545;
+    border-left: 4px solid #fd7e14;
+}
+
+.toast-info {
+    background-color: #0066cc;
+    border-left: 4px solid #0099ff;
+}
+
+.toast-warning {
+    background-color: #ffc107;
+    border-left: 4px solid #ff6b6b;
+    color: #333;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(400px);
+        opacity: 0;
+    }
 }

@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $full_name = trim($_POST['fullname'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $message_text = trim($_POST['message'] ?? '');
+    $photo_filename = null;
     
     // Validation
     if (empty($full_name) || empty($email) || empty($message_text)) {
@@ -20,22 +21,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Please enter a valid email address!";
     } else {
-        // Save to database
-        $query = "INSERT INTO contact_messages (full_name, email, message) VALUES (?, ?, ?)";
-        $stmt = mysqli_prepare($conn, $query);
-        
-        if ($stmt) {
-            mysqli_stmt_bind_param($stmt, "sss", $full_name, $email, $message_text);
-            
-            if (mysqli_stmt_execute($stmt)) {
-                $message = "Thank you! Your message has been sent successfully. We'll get back to you soon!";
-                $form_submitted = true;
+        // Handle photo upload
+        if (isset($_FILES['photo']) && $_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
+            if ($_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+                $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                $file_type = mime_content_type($_FILES['photo']['tmp_name']);
+                $max_size = 5 * 1024 * 1024; // 5MB
+                
+                if (!in_array($file_type, $allowed_types)) {
+                    $error = "Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed.";
+                } elseif ($_FILES['photo']['size'] > $max_size) {
+                    $error = "File size exceeds 5MB limit.";
+                } else {
+                    // Create upload directory if it doesn't exist
+                    $upload_dir = 'image/contact_uploads/';
+                    if (!is_dir($upload_dir)) {
+                        mkdir($upload_dir, 0755, true);
+                    }
+                    
+                    // Generate unique filename
+                    $file_extension = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
+                    $photo_filename = 'contact_' . time() . '_' . uniqid() . '.' . $file_extension;
+                    $upload_path = $upload_dir . $photo_filename;
+                    
+                    if (!move_uploaded_file($_FILES['photo']['tmp_name'], $upload_path)) {
+                        $error = "Failed to upload photo. Please try again.";
+                        $photo_filename = null;
+                    }
+                }
             } else {
-                $error = "An error occurred. Please try again later.";
+                $error = "An error occurred during file upload. Please try again.";
             }
-            mysqli_stmt_close($stmt);
-        } else {
-            $error = "Database error. Please try again later.";
+        }
+        
+        // Only proceed if no error occurred
+        if (empty($error)) {
+            // Save to database
+            $query = "INSERT INTO contact_messages (full_name, email, message, photo) VALUES (?, ?, ?, ?)";
+            $stmt = mysqli_prepare($conn, $query);
+            
+            if ($stmt) {
+                mysqli_stmt_bind_param($stmt, "ssss", $full_name, $email, $message_text, $photo_filename);
+                
+                if (mysqli_stmt_execute($stmt)) {
+                    $message = "Thank you! Your submission has been received successfully. We'll get back to you soon!";
+                    $form_submitted = true;
+                } else {
+                    $error = "An error occurred. Please try again later.";
+                }
+                mysqli_stmt_close($stmt);
+            } else {
+                $error = "Database error. Please try again later.";
+            }
         }
     }
 }
@@ -91,63 +128,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </nav>
 
-    <!-- Login Modal -->
-    <div class="login-modal" id="loginModal">
-        <div class="login-container">
-            <span class="close-btn" id="closeBtn">&times;</span>
-            
-            <!-- Tab Buttons -->
-            <div class="login-tabs">
-                <button class="tab-btn active" data-tab="signin">Sign In</button>
-                <button class="tab-btn" data-tab="signup">Sign Up</button>
-            </div>
-
-            <!-- Sign In Form -->
-            <form class="login-form active" id="signinForm">
-                <h2>Sign In</h2>
-                <div class="form-group">
-                    <input type="email" placeholder="Email Address" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" placeholder="Password" required>
-                </div>
-                <div class="form-group checkbox">
-                    <input type="checkbox" id="remember">
-                    <label for="remember">Remember me</label>
-                </div>
-                <button type="submit" class="submit-btn">Sign In</button>
-                <p class="form-footer">Don't have an account? <a href="#" class="tab-link" data-tab="signup">Sign Up</a></p>
-            </form>
-
-            <!-- Sign Up Form -->
-            <form class="login-form" id="signupForm">
-                <h2>Sign Up</h2>
-                <div class="form-group">
-                    <input type="text" placeholder="Full Name" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" placeholder="Email Address" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" placeholder="Password" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" placeholder="Confirm Password" required>
-                </div>
-                <div class="form-group checkbox">
-                    <input type="checkbox" id="terms">
-                    <label for="terms">I agree to the terms and conditions</label>
-                </div>
-                <button type="submit" class="submit-btn">Sign Up</button>
-                <p class="form-footer">Already have an account? <a href="#" class="tab-link" data-tab="signin">Sign In</a></p>
-            </form>
-        </div>
-    </div>
+    <!-- Reusable Auth Component -->
+    <?php include 'includes/auth-modal.php'; ?>
 
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="container">
-            <h2 class="section-title">Contact Information</h2>
+            <h2 class="section-title">Join Us</h2>
             <div class="contact-wrapper">
                 <div class="contact-info">
                     <h3>Get In Touch With Us</h3>
@@ -199,7 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="contact-message error"><?php echo htmlspecialchars($error); ?></div>
                     <?php endif; ?>
                     
-                    <form method="POST" id="contactForm">
+                    <form method="POST" id="contactForm" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="fullname" class="form-label">Full Name</label>
                             <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required value="<?php echo $form_submitted ? '' : (isset($_POST['fullname']) ? htmlspecialchars($_POST['fullname']) : ''); ?>">
@@ -211,6 +198,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="form-group">
                             <label for="message" class="form-label">Message</label>
                             <textarea id="message" name="message" placeholder="Enter your message" rows="6" required><?php echo $form_submitted ? '' : (isset($_POST['message']) ? htmlspecialchars($_POST['message']) : ''); ?></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="photo" class="form-label">Photo (Optional)</label>
+                            <input type="file" id="photo" name="photo" accept="image/jpeg,image/png,image/gif,image/webp" placeholder="Choose a photo">
+                            <small style="color: #666; display: block; margin-top: 5px;">Supported formats: JPEG, PNG, GIF, WebP (Max 5MB)</small>
                         </div>
                         <button type="submit" class="submit-btn">Send Message</button>
                     </form>
