@@ -69,13 +69,19 @@
                     <input type="password" name="confirm_password" placeholder="Confirm Password" required>
                 </div>
                 <div class="form-group">
+                    <label for="profile_pic" style="display: block; margin-bottom: 8px; color: #333; font-weight: 600;">Profile Picture (Optional)</label>
+                    <input type="file" name="profile_pic" id="profile_pic" accept="image/*" style="padding: 8px; border: 1px solid #ddd; border-radius: 5px; width: 100%;">
+                    <small style="color: #999; display: block; margin-top: 4px;">Accepted formats: JPG, PNG, GIF, WebP (Max 5MB)</small>
+                </div>
+                <div class="form-group">
                     <select name="team" placeholder="Select Team (Optional)">
                         <option value="">Select Team (Optional)</option>
-                        <option value="Cricket">Cricket</option>
-                        <option value="Football">Football</option>
-                        <option value="Badminton">Badminton</option>
-                        <option value="Tennis">Tennis</option>
-                        <option value="Athletics">Athletics</option>
+                        <option value="Cricket Team">Cricket Team</option>
+                        <option value="Football Team">Football Team</option>
+                        <option value="Badminton Team">Badminton Team</option>
+                        <option value="Basketball Team">Basketball Team</option>
+                        <option value="Tennis Team">Tennis Team</option>
+                        <option value="Athletics Team">Athletics Team</option>
                         <option value="Other">Other</option>
                     </select>
                 </div>

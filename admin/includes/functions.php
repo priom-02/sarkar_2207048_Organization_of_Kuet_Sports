@@ -55,23 +55,54 @@ function get_member($conn, $id) {
 }
 
 /**
- * Add new member
+ * Add new member and sync to users table
  */
 function add_member($conn, $name, $position, $team, $email, $phone, $bio, $photo) {
     $query = "INSERT INTO members (name, position, team, email, phone, bio, photo) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, "sssssss", $name, $position, $team, $email, $phone, $bio, $photo);
-    return mysqli_stmt_execute($stmt);
+    $member_added = mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    
+    // If email is provided and member was added, update users table if user exists
+    if ($member_added && !empty($email)) {
+        $sync_query = "UPDATE users SET team=?, profile_pic=? WHERE email=?";
+        $sync_stmt = mysqli_prepare($conn, $sync_query);
+        
+        if ($sync_stmt) {
+            mysqli_stmt_bind_param($sync_stmt, "sss", $team, $photo, $email);
+            mysqli_stmt_execute($sync_stmt);
+            mysqli_stmt_close($sync_stmt);
+        }
+    }
+    
+    return $member_added;
 }
 
 /**
- * Update member
+ * Update member and sync to users table
  */
 function update_member($conn, $id, $name, $position, $team, $email, $phone, $bio, $photo) {
+    // Update members table
     $query = "UPDATE members SET name=?, position=?, team=?, email=?, phone=?, bio=?, photo=? WHERE id=?";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, "sssssssi", $name, $position, $team, $email, $phone, $bio, $photo, $id);
-    return mysqli_stmt_execute($stmt);
+    $member_updated = mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    
+    // Sync team and profile_pic to users table if user exists
+    if ($member_updated && !empty($email)) {
+        $sync_query = "UPDATE users SET team=?, profile_pic=? WHERE email=?";
+        $sync_stmt = mysqli_prepare($conn, $sync_query);
+        
+        if ($sync_stmt) {
+            mysqli_stmt_bind_param($sync_stmt, "sss", $team, $photo, $email);
+            mysqli_stmt_execute($sync_stmt);
+            mysqli_stmt_close($sync_stmt);
+        }
+    }
+    
+    return $member_updated;
 }
 
 /**

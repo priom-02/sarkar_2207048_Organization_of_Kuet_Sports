@@ -6,6 +6,40 @@ require_once 'admin/includes/db.php';
 
 $response = ['success' => false, 'message' => 'Invalid request', 'debug' => []];
 
+// ========== AUTO-LOGIN FROM REMEMBER_ME COOKIE ==========
+if (!isset($_SESSION['user']) && isset($_COOKIE['remember_me'])) {
+    $cookie_data = explode('|', $_COOKIE['remember_me']);
+    if (count($cookie_data) == 2) {
+        $user_id = intval($cookie_data[0]);
+        $cookie_token = $cookie_data[1];
+        
+        // Verify the user exists and token matches
+        $verify_query = "SELECT id, full_name, email, password FROM users WHERE id = ?";
+        $verify_stmt = mysqli_prepare($conn, $verify_query);
+        
+        if ($verify_stmt) {
+            mysqli_stmt_bind_param($verify_stmt, "i", $user_id);
+            mysqli_stmt_execute($verify_stmt);
+            $verify_result = mysqli_stmt_get_result($verify_stmt);
+            
+            if (mysqli_num_rows($verify_result) > 0) {
+                $user = mysqli_fetch_assoc($verify_result);
+                // Validate token
+                $expected_token = hash('sha256', $user['email'] . $user['password']);
+                
+                if ($cookie_token === $expected_token) {
+                    // Auto-login the user
+                    $_SESSION['user'] = $user['email'];
+                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['user_name'] = $user['full_name'];
+                    error_log("Auto-login successful for user: " . $user['email']);
+                }
+            }
+            mysqli_stmt_close($verify_stmt);
+        }
+    }
+}
+
 // Log all incoming requests for debugging
 error_log("Auth Request: " . print_r($_POST, true));
 
@@ -23,6 +57,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $password = $_POST['password'] ?? '';
         $confirm_password = $_POST['confirm_password'] ?? '';
         $team = trim($_POST['team'] ?? '');
+        $profile_photo = 'image/members/default.png'; // Default photo
+        
+        // Handle profile picture upload
+        if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] === UPLOAD_ERR_OK) {
+            $upload_dir = 'image/members/';
+            
+            // Create directory if it doesn't exist
+            if (!is_dir($upload_dir)) {
+                mkdir($upload_dir, 0755, true);
+            }
+            
+            // Validate file type
+            $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $file_name = $_FILES['profile_pic']['name'];
+            $file_extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+            
+            if (in_array($file_extension, $allowed_extensions) && $_FILES['profile_pic']['size'] <= 5 * 1024 * 1024) {
+                $filename = 'user_' . time() . '_' . uniqid() . '.' . $file_extension;
+                $upload_path = $upload_dir . $filename;
+                
+                if (move_uploaded_file($_FILES['profile_pic']['tmp_name'], $upload_path)) {
+                    $profile_photo = $upload_dir . $filename;
+                    $response['debug']['photo_uploaded'] = true;
+                }
+            }
+        }
         
         $response['debug']['fields_received'] = [
             'full_name' => $full_name,
@@ -88,8 +148,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
         $response['debug']['hash_created'] = true;
         
-        // Insert new user
-        $insert_query = "INSERT INTO users (full_name, email, password, team) VALUES (?, ?, ?, ?)";
+        // Insert new user with profile picture
+        $insert_query = "INSERT INTO users (full_name, email, password, team, profile_pic) VALUES (?, ?, ?, ?, ?)";
         $insert_stmt = mysqli_prepare($conn, $insert_query);
         
         if (!$insert_stmt) {
@@ -101,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         }
         
-        mysqli_stmt_bind_param($insert_stmt, "ssss", $full_name, $email, $hashed_password, $team);
+        mysqli_stmt_bind_param($insert_stmt, "sssss", $full_name, $email, $hashed_password, $team, $profile_photo);
         $response['debug']['bind_params'] = 'Success';
         error_log("About to execute insert with: full_name=$full_name, email=$email");
         
@@ -125,6 +185,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 error_log("Verification result: " . ($inserted_user ? "Success" : "Failed"));
                 
                 if ($inserted_user) {
+                    // If user selected a team, add them to members table
+                    if (!empty($team) && $team !== 'Other') {
+                        $default_position = 'Player';
+                        $empty_phone = '';
+                        $empty_bio = '';
+                        
+                        $member_query = "INSERT INTO members (name, position, team, email, phone, bio, photo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                        $member_stmt = mysqli_prepare($conn, $member_query);
+                        
+                        if ($member_stmt) {
+                            mysqli_stmt_bind_param($member_stmt, "sssssss", $full_name, $default_position, $team, $email, $empty_phone, $empty_bio, $profile_photo);
+                            
+                            if (mysqli_stmt_execute($member_stmt)) {
+                                $response['debug']['member_added'] = true;
+                                $response['debug']['member_id'] = mysqli_insert_id($conn);
+                                error_log("User added to members table. Team: $team");
+                            } else {
+                                $response['debug']['member_error'] = mysqli_error($conn);
+                                error_log("Failed to add user to members: " . mysqli_error($conn));
+                            }
+                            mysqli_stmt_close($member_stmt);
+                        }
+                    }
+                    
                     $_SESSION['user'] = $email;
                     $_SESSION['user_id'] = $new_id;
                     $_SESSION['user_name'] = $full_name;
@@ -159,6 +243,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     else if ($action == 'signin') {
         $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
+        $remember_me = isset($_POST['remember_me']) && $_POST['remember_me'] == '1';
         
         // Validation
         if (empty($email) || empty($password)) {
@@ -185,6 +270,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $_SESSION['user_id'] = $user['id'];
                     $_SESSION['user_name'] = $user['full_name'];
                     
+                    // Set "Remember Me" cookie if checked
+                    if ($remember_me) {
+                        // Create a secure token: user_id + email hash
+                        $cookie_token = $user['id'] . '|' . hash('sha256', $user['email'] . $user['password']);
+                        // Set cookie for 30 days
+                        setcookie('remember_me', $cookie_token, time() + (30 * 24 * 60 * 60), '/', '', false, true);
+                        $response['debug']['cookie_set'] = true;
+                    }
+                    
                     $response['success'] = true;
                     $response['message'] = 'Login successful! Redirecting...';
                     $response['redirect'] = 'home.php';
@@ -205,6 +299,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // ========== LOGOUT ==========
     else if ($action == 'logout') {
         session_destroy();
+        // Clear the remember_me cookie
+        setcookie('remember_me', '', time() - 3600, '/', '', false, true);
         $response['success'] = true;
         $response['message'] = 'Logged out successfully';
         $response['redirect'] = 'home.php';

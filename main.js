@@ -328,8 +328,9 @@ function initLoginModal() {
             
             const email = signinForm.querySelector('input[name="email"]').value.trim();
             const password = signinForm.querySelector('input[name="password"]').value;
+            const rememberMe = signinForm.querySelector('input[name="remember"]').checked;
             
-            console.log('Signin Form Data:', { email, password: '***' });
+            console.log('Signin Form Data:', { email, password: '***', rememberMe });
             
             if (!email || !password) {
                 showToast('Please fill all fields', 'error');
@@ -340,6 +341,7 @@ function initLoginModal() {
             formData.append('action', 'signin');
             formData.append('email', email);
             formData.append('password', password);
+            formData.append('remember_me', rememberMe ? '1' : '0');
             
             console.log('Sending signin request to auth-backend.php');
             
@@ -384,8 +386,9 @@ function initLoginModal() {
             const confirm_password = signupForm.querySelector('input[name="confirm_password"]').value;
             const team = signupForm.querySelector('select[name="team"]').value;
             const terms = signupForm.querySelector('input[name="terms"]').checked;
+            const profile_pic = signupForm.querySelector('input[name="profile_pic"]').files[0];
             
-            console.log('Signup Form Data:', { full_name, email, team, password: '***', confirm_password: '***', terms });
+            console.log('Signup Form Data:', { full_name, email, team, password: '***', confirm_password: '***', terms, has_profile_pic: !!profile_pic });
             
             if (!full_name || !email || !password || !confirm_password) {
                 showToast('Please fill all fields', 'error');
@@ -414,6 +417,11 @@ function initLoginModal() {
             formData.append('team', team);
             formData.append('password', password);
             formData.append('confirm_password', confirm_password);
+            
+            // Append profile picture if provided
+            if (profile_pic) {
+                formData.append('profile_pic', profile_pic);
+            }
             
             console.log('Sending signup request to auth-backend.php');
             
