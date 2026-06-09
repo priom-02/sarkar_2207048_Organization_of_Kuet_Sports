@@ -17,3 +17,6 @@ CREATE TABLE IF NOT EXISTS registrations (
     approved_at TIMESTAMP NULL,
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
 );
+
+-- Add photo column to contact_messages table if it doesn't exist
+ALTER TABLE contact_messages ADD COLUMN photo VARCHAR(255) NULL AFTER message;

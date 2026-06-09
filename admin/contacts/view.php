@@ -206,6 +206,40 @@ if ($message['status'] == 'new') {
         .back-link:hover {
             text-decoration: underline;
         }
+        
+        .photo-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .photo-label {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 14px;
+            display: block;
+        }
+        
+        .photo-container {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        
+        .photo-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .no-photo {
+            padding: 40px 20px;
+            color: #999;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -246,6 +280,15 @@ if ($message['status'] == 'new') {
                     <span class="info-value"><?php echo ucfirst($message['status']); ?></span>
                 </div>
             </div>
+            
+            <?php if (isset($message['photo']) && !empty($message['photo'])): ?>
+            <div class="photo-section">
+                <span class="photo-label">Attached Photo:</span>
+                <div class="photo-container">
+                    <img src="../../image/contact_uploads/<?php echo htmlspecialchars($message['photo']); ?>" alt="User submitted photo">
+                </div>
+            </div>
+            <?php endif; ?>
             
             <div class="message-body">
                 <?php echo htmlspecialchars($message['message']); ?>
